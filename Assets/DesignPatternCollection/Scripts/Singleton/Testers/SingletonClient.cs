@@ -4,15 +4,32 @@ namespace DesignPattern.SingletonPattern
 {
     public class SingletonClient : MonoBehaviour
     {
-        private AudioSource audioSource;
+        private GameManager m_gameManager;
 
         private void Start()
         {
-            audioSource = FindAnyObjectByType<AudioSource>();
+            m_gameManager = FindAnyObjectByType<GameManager>();
 
-            if (audioSource == null) return;
+            if (m_gameManager != null)
+                Debug.Log($"{m_gameManager.name} is already registered to {name}.");
+        }
 
-            Debug.Log("Audio Source is Found at: " + audioSource.gameObject.name);
+        private void OnGUI()
+        {
+            GUILayout.Label($"Player Health: {m_gameManager.Health}");
+            GUILayout.Label($"Player Attack: {m_gameManager.Attack}");
+
+            if (GUILayout.Button("Increase 100 HP"))
+                m_gameManager.SetHealth(100);
+
+            if (GUILayout.Button("Increase 100 ATK"))
+                m_gameManager.SetAttack(100);
+
+            if (GUILayout.Button("Reduce 100 HP"))
+                m_gameManager.SetHealth(-100);
+
+            if (GUILayout.Button("Reduce 100 ATK"))
+                m_gameManager.SetAttack(-100);            
         }
     }
 }

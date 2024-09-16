@@ -13,9 +13,7 @@ namespace DesignPattern.EventBusPattern
 
         public static void Subscribe(Enum eventType, UnityAction listener)
         {
-            UnityEvent thisEvent;
-
-            if (!Events.TryGetValue(eventType, out thisEvent))
+            if (!Events.TryGetValue(eventType, out UnityEvent thisEvent))
             {
                 thisEvent = new UnityEvent();
                 thisEvent.AddListener(listener);
@@ -43,14 +41,12 @@ namespace DesignPattern.EventBusPattern
         #endregion
 
         #region non-Static EventBus
-        private readonly IDictionary<Enum, UnityEvent>
+        private readonly Dictionary<Enum, UnityEvent>
                        m_events = new Dictionary<Enum, UnityEvent>();
 
-        public void RegisterEvent(Enum eventType, UnityAction listener)
+        public void Register(Enum eventType, UnityAction listener)
         {
-            UnityEvent thisEvent;
-
-            if (!m_events.TryGetValue(eventType, out thisEvent))
+            if (!m_events.TryGetValue(eventType, out UnityEvent thisEvent))
             {
                 thisEvent = new UnityEvent();
                 thisEvent.AddListener(listener);
@@ -64,13 +60,13 @@ namespace DesignPattern.EventBusPattern
             }
         }
 
-        public void UnRegisterEvent(Enum eventType, UnityAction listener)
+        public void UnRegister(Enum eventType, UnityAction listener)
         {
             if (m_events.TryGetValue(eventType, out UnityEvent thisEvent))
                 thisEvent.RemoveListener(listener);
         }
 
-        public void InvokeEventBus(Enum eventType)
+        public void InvokeEvent(Enum eventType)
         {
             if (m_events.TryGetValue(eventType, out UnityEvent thisEvent))
                 thisEvent.Invoke();
